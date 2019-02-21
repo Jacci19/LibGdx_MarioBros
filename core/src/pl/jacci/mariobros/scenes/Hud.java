@@ -11,9 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import pl.jacci.mariobros.MarioBros;
 
-/**
- * Created by brentaureli on 8/17/15.
- */
+
 public class Hud {
 
     //Scene2D.ui Stage and its own Viewport for HUD
