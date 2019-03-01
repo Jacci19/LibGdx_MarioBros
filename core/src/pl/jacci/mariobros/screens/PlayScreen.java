@@ -64,11 +64,11 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);   //ustalamy początkową pozycję kamery (aby nie patrzyła na 0,0
 
                                                             //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
-        world = new World(new Vector2(0,-10), true);        //w box2d jak obiekt się nie rusza to nie jest obliczany (sleep)
-        b2dr = new Box2DDebugRenderer();                                                 //allows for debug lines of our box2d world.
+        world = new World(new Vector2(0,-10), true);                        //w box2d jak obiekt się nie rusza to nie jest obliczany (sleep)
+        b2dr = new Box2DDebugRenderer();                                                //allows for debug lines of our box2d world.
 
-        new B2WorldCreator(world, map);
-        player = new Mario(world, this);                                           //create mario in our game world
+        new B2WorldCreator(this);
+        player = new Mario(this);                                                 //create mario in our game world
 
         world.setContactListener(new WorldContactListener());
 
@@ -140,6 +140,13 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);                                     //updated our game viewport
+    }
+
+    public TiledMap getMap(){
+        return map;
+    }
+    public World getWorld(){
+        return world;
     }
 
     @Override

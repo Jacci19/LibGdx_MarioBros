@@ -30,43 +30,46 @@ public class Mario extends Sprite {
     private float stateTimer;
     private boolean runningRight;
 
-    public Mario(World world, PlayScreen screen){
+    public Mario(PlayScreen screen){
         super(screen.getAtlas().findRegion("little_mario"));
-        this.world = world;
-        defineMario();
 
+            //initialize default values
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
-        for(int i = 1; i < 4; i++){                                                                     //klatki chodzenia
+        for(int i = 1; i < 4; i++){                                                                 //get run animation frames and add them to marioRun Animation
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
         }
         marioRun = new Animation(0.1f, frames);
-        frames.clear();
+        frames.clear();                                                                             //clear frames for next animation sequence
 
-        for(int i = 4; i < 6; i++){                                                                     //klatki skakania
+        for(int i = 4; i < 6; i++){                                                                 //get jump animation frames and add them to marioJump Animation
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
         }
         marioJump = new Animation(0.1f, frames);
 
-        marioStand = new TextureRegion(getTexture(), 0, 0, 16, 16);                                    //0,0 bo lewy górny róg obrazka z klatkami to PUW
-        setBounds(0, 0, 16 / MarioBros.PPM, 16 / MarioBros.PPM);
+        marioStand = new TextureRegion(getTexture(), 0, 0, 16, 16);                //create texture region for mario standing.  0,0 bo lewy górny róg obrazka z klatkami to PUW
+
+        defineMario();                                                                              //define mario in Box2d
+
+        setBounds(0, 0, 16 / MarioBros.PPM, 16 / MarioBros.PPM);                   //set initial values for marios location, width and height. And initial frame as marioStand.
         setRegion(marioStand);
     }
 
     public void update(float dt){
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        setRegion(getFrame(dt));
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);         //update our sprite to correspond with the position of our Box2D body
+        setRegion(getFrame(dt));                                                                    //update sprite with the correct frame depending on marios current action
     }
 
     public TextureRegion getFrame(float dt){
-        currentState = getState();
+        currentState = getState();                                                                  //get marios current state. ie. jumping, running, standing...
 
         TextureRegion region;
-        switch(currentState){
+        switch(currentState){                                                                       //depending on the state, get corresponding animation keyFrame.
             case JUMPING:
                 region = (TextureRegion) marioJump.getKeyFrame(stateTimer);
                 break;
@@ -80,29 +83,35 @@ public class Mario extends Sprite {
                 break;
         }
 
-        if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
+        if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){               //if mario is running left and the texture isn't facing left... flip it.
             region.flip(true, false);
             runningRight = false;
         }
-        else if((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
+        else if((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){            //if mario is running right and the texture isn't facing right... flip it.
             region.flip(true, false);
             runningRight = true;
         }
-
+            //if the current state is the same as the previous state increase the state timer. Otherwise the state has changed and we need to reset timer.
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
-        previousState = currentState;
-        return region;
+        previousState = currentState;                                                               //update previous state
+        return region;                                                                              //return our final adjusted frame
     }
 
     public State getState(){
-        if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
+            //Test to Box2D for velocity on the X and Y-Axis
+            //if mario is going positive in Y-Axis he is jumping... or if he just jumped and is falling remain in jump state
+        if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
             return State.JUMPING;
-        else if(b2body.getLinearVelocity().y < 0)
+        }                                                                                           //if negative in Y-Axis mario is falling
+        else if(b2body.getLinearVelocity().y < 0){
             return State.FALLING;
-        else if(b2body.getLinearVelocity().x != 0)
+        }                                                                                           //if mario is positive or negative in the X axis he is running
+        else if(b2body.getLinearVelocity().x != 0){
             return State.RUNNING;
-        else
+        }                                                                                           //if none of these return then he must be standing
+        else{
             return State.STANDING;
+        }
     }
 
     public void defineMario(){
