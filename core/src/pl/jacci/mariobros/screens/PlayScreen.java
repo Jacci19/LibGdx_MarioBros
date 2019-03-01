@@ -3,6 +3,7 @@ package pl.jacci.mariobros.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -40,6 +41,8 @@ public class PlayScreen implements Screen {
                                                         //sprites
     private Mario player;
 
+    private Music music;
+
 
     public PlayScreen(MarioBros game) {
 
@@ -68,6 +71,11 @@ public class PlayScreen implements Screen {
         player = new Mario(world, this);                                           //create mario in our game world
 
         world.setContactListener(new WorldContactListener());
+
+        music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
+        music.setVolume(0.1f);
+        music.setLooping(true);
+        music.play();
     }
 
     public TextureAtlas getAtlas(){
