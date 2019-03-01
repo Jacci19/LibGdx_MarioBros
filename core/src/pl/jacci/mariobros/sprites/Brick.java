@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 
 import pl.jacci.mariobros.MarioBros;
+import pl.jacci.mariobros.scenes.Hud;
 
 
 public class Brick extends InteractiveTileObject {
@@ -20,6 +21,7 @@ public class Brick extends InteractiveTileObject {
         System.out.println("brick collision");                                  //można też tak: Gdx.app.log("Brick", "Collision");
         setCategoryFilter(MarioBros.DESTROYED_BIT);
         getCell().setTile(null);                                                // zapewnia znikanie uderzonych cegieł
+        Hud.addScore(200);
     }
 
 
