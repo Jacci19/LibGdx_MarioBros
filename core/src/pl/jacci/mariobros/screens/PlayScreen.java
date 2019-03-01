@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.jacci.mariobros.MarioBros;
+import pl.jacci.mariobros.sprites.Goomba;
 import pl.jacci.mariobros.tools.B2WorldCreator;
 import pl.jacci.mariobros.tools.WorldContactListener;
 import pl.jacci.mariobros.scenes.Hud;
@@ -40,6 +41,7 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;                    //graphical representation of fixtures of body in box2d world
                                                         //sprites
     private Mario player;
+    private Goomba goomba;
 
     private Music music;
 
@@ -76,6 +78,8 @@ public class PlayScreen implements Screen {
         music.setVolume(0.1f);
         music.setLooping(true);
         music.play();
+
+        goomba = new Goomba(this, .32f, .32f);
     }
 
     public TextureAtlas getAtlas(){
@@ -110,6 +114,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);                                                    //handle user input first
         world.step(1/60f, 6, 2);         //takes 1 step in the physics simulation(60 times per second)
         player.update(dt);
+        goomba.update(dt);
         hud.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;                 //attach our gamecam to our players.x coordinate
 
@@ -131,6 +136,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        goomba.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);     //Set our batch to now draw what the Hud camera sees.

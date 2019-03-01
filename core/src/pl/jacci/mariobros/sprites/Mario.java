@@ -1,9 +1,7 @@
 package pl.jacci.mariobros.sprites;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -124,7 +122,11 @@ public class Mario extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
         fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.COIN_BIT | MarioBros.BRICK_BIT;            //z czym mario może kolidować
+        fdef.filter.maskBits =  MarioBros.GROUND_BIT |
+                                MarioBros.COIN_BIT |
+                                MarioBros.BRICK_BIT |
+                                MarioBros.ENEMY_BIT |
+                                MarioBros.OBJECT_BIT;                                               //z czym mario może kolidować
 
 
         fdef.shape = shape;
