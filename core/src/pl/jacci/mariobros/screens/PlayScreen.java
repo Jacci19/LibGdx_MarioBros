@@ -16,7 +16,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.jacci.mariobros.MarioBros;
-import pl.jacci.mariobros.Tools.B2WorldCreator;
+import pl.jacci.mariobros.tools.B2WorldCreator;
+import pl.jacci.mariobros.tools.WorldContactListener;
 import pl.jacci.mariobros.scenes.Hud;
 import pl.jacci.mariobros.sprites.Mario;
 
@@ -52,7 +53,7 @@ public class PlayScreen implements Screen {
         gamePort = new FitViewport(MarioBros.V_WIDTH / MarioBros.PPM, MarioBros.V_HEIGHT / MarioBros.PPM, gameCam);
 
         hud = new Hud(game.batch);                                                       //create our game HUD for scores/timers/level info
-                                                                                        //Load our map and setup our map renderer
+                                                                                         //Load our map and setup our map renderer
         maploader = new TmxMapLoader();
         map = maploader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBros.PPM);
@@ -61,10 +62,12 @@ public class PlayScreen implements Screen {
 
                                                             //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
         world = new World(new Vector2(0,-10), true);        //w box2d jak obiekt się nie rusza to nie jest obliczany (sleep)
-        b2dr = new Box2DDebugRenderer();                                //allows for debug lines of our box2d world.
+        b2dr = new Box2DDebugRenderer();                                                 //allows for debug lines of our box2d world.
 
         new B2WorldCreator(world, map);
-        player = new Mario(world, this);                                            //create mario in our game world
+        player = new Mario(world, this);                                           //create mario in our game world
+
+        world.setContactListener(new WorldContactListener());
     }
 
     public TextureAtlas getAtlas(){
