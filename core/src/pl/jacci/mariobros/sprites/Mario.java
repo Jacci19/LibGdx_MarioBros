@@ -127,7 +127,8 @@ public class Mario extends Sprite {
                                 MarioBros.BRICK_BIT |
                                 MarioBros.ENEMY_BIT |
                                 MarioBros.OBJECT_BIT |
-                                MarioBros.ENEMY_HEAD_BIT;                                           //z czym mario może kolidować
+                                MarioBros.ENEMY_HEAD_BIT |
+                                MarioBros.ITEM_BIT;                                                 //z czym mario może kolidować
 
 
         fdef.shape = shape;
