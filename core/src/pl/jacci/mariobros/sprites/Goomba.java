@@ -1,6 +1,7 @@
 package pl.jacci.mariobros.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -81,6 +82,11 @@ public class Goomba extends Enemy
         fdef.restitution = 0.5f;                                                                    //aby mario po naskoczeniu na goombę podskoczył trochę do góry
         fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);                                               //setUserData - aby mieś dostęp do tej klasy z handlera kolizji
+    }
+
+    public void draw(Batch batch){
+        if(!destroyed || stateTime < 1)
+            super.draw(batch);                                                                      //aby goomba po zmiażdżeniu zniknął po jednej sekundzie.
     }
 
     @Override
