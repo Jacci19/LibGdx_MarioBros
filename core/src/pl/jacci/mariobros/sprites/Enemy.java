@@ -14,7 +14,7 @@ public abstract class Enemy extends Sprite {
     public Body b2body;
     public Vector2 velocity;
 
-    public Enemy(PlayScreen screen, float x, float y){
+    public Enemy(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
         this.screen = screen;
         setPosition(x, y);
@@ -24,5 +24,12 @@ public abstract class Enemy extends Sprite {
 
     protected abstract void defineEnemy();
     public abstract void hitOnHead();
+
+    public void reverseVelocity(boolean x, boolean y) {
+        if (x)
+            velocity.x = -velocity.x;
+        if (y)
+            velocity.y = -velocity.y;
+    }
 
 }

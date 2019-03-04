@@ -68,7 +68,7 @@ public class Goomba extends Enemy
                 MarioBros.MARIO_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
         //Create the Head here:
         PolygonShape head = new PolygonShape();                                                     // trapez na głowie goomby

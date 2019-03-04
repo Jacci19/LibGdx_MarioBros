@@ -30,13 +30,22 @@ public class WorldContactListener implements ContactListener {
         }
 
         switch (cDef){
-            case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:
+            case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:                                    //jeśli czubek głowy wroga koliduje z mario...
                 if(fixA.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT){
                     ((Enemy)fixA.getUserData()).hitOnHead();
                 }
-                else if(fixB.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT){
+                else{
                     ((Enemy)fixB.getUserData()).hitOnHead();
                 }
+                break;
+            case MarioBros.ENEMY_BIT | MarioBros.OBJECT_BIT:                                        //jeśli wróg koliduje z obiektem (np. rurą)...
+                if(fixA.getFilterData().categoryBits == MarioBros.ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);                 //...to odwróć kierunek chodzenia wroga
+                }
+                else{
+                    ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
+                }
+                break;
         }
     }
 
