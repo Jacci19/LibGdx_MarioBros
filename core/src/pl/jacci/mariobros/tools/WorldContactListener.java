@@ -46,6 +46,13 @@ public class WorldContactListener implements ContactListener {
                     ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 }
                 break;
+            case MarioBros.MARIO_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z mario...
+                Gdx.app.log("MARIO", "DIED");
+                break;
+            case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z innym wrogiem...
+                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                break;
         }
     }
 

@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.jacci.mariobros.MarioBros;
-import pl.jacci.mariobros.sprites.Goomba;
+import pl.jacci.mariobros.sprites.Enemy;
 import pl.jacci.mariobros.tools.B2WorldCreator;
 import pl.jacci.mariobros.tools.WorldContactListener;
 import pl.jacci.mariobros.scenes.Hud;
@@ -25,23 +25,24 @@ import pl.jacci.mariobros.sprites.Mario;
 
 
 public class PlayScreen implements Screen {
-                                                        //Reference to our Game, used to set Screens
+
+        //Reference to our Game, used to set Screens
     private MarioBros game;
     private TextureAtlas atlas;
-                                                        //basic playscreen variables
+        //basic playscreen variables
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
-                                                        //Tiled map variables
+        //Tiled map variables
     private TmxMapLoader maploader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-                                                        //Box2d variables
+        //Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;                    //graphical representation of fixtures of body in box2d world
-                                                        //sprites
+    private B2WorldCreator creator;
+        //sprites
     private Mario player;
-    private Goomba goomba;
 
     private Music music;
 
@@ -69,7 +70,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0,-10), true);                        //w box2d jak obiekt się nie rusza to nie jest obliczany (sleep)
         b2dr = new Box2DDebugRenderer();                                                //allows for debug lines of our box2d world.
 
-        new B2WorldCreator(this);
+        creator = new B2WorldCreator(this);
         player = new Mario(this);                                                 //create mario in our game world
 
         world.setContactListener(new WorldContactListener());
@@ -79,7 +80,6 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        goomba = new Goomba(this, 5.64f, .16f);
     }
 
     public TextureAtlas getAtlas(){
@@ -97,7 +97,6 @@ public class PlayScreen implements Screen {
             gameCam.position.x += 100 * dt;
         }
 */
-                                                                                                    //control our player using immediate impulses
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){                                                                  //działa raz po naciśnięciu
             player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);      //center - aby nie powstał torque
         }
@@ -114,7 +113,9 @@ public class PlayScreen implements Screen {
         handleInput(dt);                                                    //handle user input first
         world.step(1/60f, 6, 2);         //takes 1 step in the physics simulation(60 times per second)
         player.update(dt);
-        goomba.update(dt);
+        for (Enemy enemy : creator.getGoombas()){
+            enemy.update(dt);
+        }
         hud.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;                 //attach our gamecam to our players.x coordinate
 
@@ -136,7 +137,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        goomba.draw(game.batch);
+        for (Enemy enemy : creator.getGoombas()){
+            enemy.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);     //Set our batch to now draw what the Hud camera sees.
