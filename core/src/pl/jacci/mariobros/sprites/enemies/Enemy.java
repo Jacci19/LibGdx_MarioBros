@@ -1,4 +1,4 @@
-package pl.jacci.mariobros.sprites;
+package pl.jacci.mariobros.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;

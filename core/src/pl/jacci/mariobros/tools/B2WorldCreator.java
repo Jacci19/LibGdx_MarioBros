@@ -14,9 +14,9 @@ import com.badlogic.gdx.utils.Array;
 
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.screens.PlayScreen;
-import pl.jacci.mariobros.sprites.Brick;
-import pl.jacci.mariobros.sprites.Coin;
-import pl.jacci.mariobros.sprites.Goomba;
+import pl.jacci.mariobros.sprites.tileObjects.Brick;
+import pl.jacci.mariobros.sprites.tileObjects.Coin;
+import pl.jacci.mariobros.sprites.enemies.Goomba;
 
 
 public class B2WorldCreator {

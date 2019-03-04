@@ -1,4 +1,4 @@
-package pl.jacci.mariobros.sprites;
+package pl.jacci.mariobros.sprites.tileObjects;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;

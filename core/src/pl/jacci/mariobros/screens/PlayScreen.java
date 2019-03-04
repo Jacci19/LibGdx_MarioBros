@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import pl.jacci.mariobros.MarioBros;
-import pl.jacci.mariobros.sprites.Enemy;
+import pl.jacci.mariobros.sprites.enemies.Enemy;
 import pl.jacci.mariobros.tools.B2WorldCreator;
 import pl.jacci.mariobros.tools.WorldContactListener;
 import pl.jacci.mariobros.scenes.Hud;

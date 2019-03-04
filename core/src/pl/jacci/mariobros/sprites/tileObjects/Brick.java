@@ -1,10 +1,7 @@
-package pl.jacci.mariobros.sprites;
+package pl.jacci.mariobros.sprites.tileObjects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
 
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.scenes.Hud;
