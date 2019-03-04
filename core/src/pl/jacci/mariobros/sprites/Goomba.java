@@ -18,6 +18,8 @@ public class Goomba extends Enemy
     private float stateTime;
     private Animation walkAnimation;
     private Array<TextureRegion> frames;
+    private boolean setToDestroy;
+    private boolean destroyed;
 
     public Goomba(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -27,12 +29,22 @@ public class Goomba extends Enemy
         walkAnimation = new Animation(0.4f, frames);
         stateTime = 0;
         setBounds(getX(), getY(), 16 / MarioBros.PPM, 16 / MarioBros.PPM);
+        setToDestroy = false;
+        destroyed = false;
     }
 
     public void update(float dt){
         stateTime += dt;
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        setRegion((TextureRegion) walkAnimation.getKeyFrame(stateTime, true));
+        if (setToDestroy && !destroyed){
+            world.destroyBody(b2body);
+            destroyed = true;
+            setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
+            stateTime = 0;
+        }
+        else if(!destroyed) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setRegion((TextureRegion) walkAnimation.getKeyFrame(stateTime, true));
+        }
     }
 
     @Override
@@ -59,15 +71,21 @@ public class Goomba extends Enemy
         //Create the Head here:
         PolygonShape head = new PolygonShape();                                                     // trapez na głowie goomby
         Vector2[] vertice = new Vector2[4];                                                         // vertices - wierzchołki
-        vertice[0] = new Vector2(-5, 8).scl(1 / MarioBros.PPM);
-        vertice[1] = new Vector2(5, 8).scl(1 / MarioBros.PPM);
-        vertice[2] = new Vector2(-3, 3).scl(1 / MarioBros.PPM);
-        vertice[3] = new Vector2(3, 3).scl(1 / MarioBros.PPM);
+        vertice[0] = new Vector2(-4, 7).scl(1 / MarioBros.PPM);                                // dałem mniejszy trapez niż brendt
+        vertice[1] = new Vector2(4, 7).scl(1 / MarioBros.PPM);
+        vertice[2] = new Vector2(-2, 2).scl(1 / MarioBros.PPM);
+        vertice[3] = new Vector2(2, 2).scl(1 / MarioBros.PPM);
         head.set(vertice);
 
         fdef.shape = head;
         fdef.restitution = 0.5f;                                                                    //aby mario po naskoczeniu na goombę podskoczył trochę do góry
         fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);                                               //setUserData - aby mieś dostęp do tej klasy z handlera kolizji
+    }
+
+    @Override
+    public void hitOnHead() {                                                                       //co ma się stać jak mario skoczy goombie na głowę...
+        //w box2D nie można usuwać obiektów (box2d bodies) podczas kolizji, dlatego zrobimy to w ten sposób:
+        setToDestroy = true;
     }
 }
