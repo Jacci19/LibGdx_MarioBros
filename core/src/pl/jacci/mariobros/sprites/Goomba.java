@@ -2,9 +2,11 @@ package pl.jacci.mariobros.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 
 import pl.jacci.mariobros.MarioBros;
@@ -36,7 +38,7 @@ public class Goomba extends Enemy
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / MarioBros.PPM, 32 / MarioBros.PPM);
+        bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -53,5 +55,19 @@ public class Goomba extends Enemy
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        //Create the Head here:
+        PolygonShape head = new PolygonShape();                                                     // trapez na głowie goomby
+        Vector2[] vertice = new Vector2[4];                                                         // vertices - wierzchołki
+        vertice[0] = new Vector2(-5, 8).scl(1 / MarioBros.PPM);
+        vertice[1] = new Vector2(5, 8).scl(1 / MarioBros.PPM);
+        vertice[2] = new Vector2(-3, 3).scl(1 / MarioBros.PPM);
+        vertice[3] = new Vector2(3, 3).scl(1 / MarioBros.PPM);
+        head.set(vertice);
+
+        fdef.shape = head;
+        fdef.restitution = 0.5f;                                                                    //aby mario po naskoczeniu na goombę podskoczył trochę do góry
+        fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);                                               //setUserData - aby mieś dostęp do tej klasy z handlera kolizji
     }
 }
