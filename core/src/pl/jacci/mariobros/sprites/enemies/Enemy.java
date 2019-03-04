@@ -19,7 +19,7 @@ public abstract class Enemy extends Sprite {
         this.screen = screen;
         setPosition(x, y);
         defineEnemy();
-        velocity = new Vector2(1, 0);
+        velocity = new Vector2(1, -2);                                                  // y=-2 aby wróg spadał jak wpadnie w dziurę
         b2body.setActive(false);
     }
 
