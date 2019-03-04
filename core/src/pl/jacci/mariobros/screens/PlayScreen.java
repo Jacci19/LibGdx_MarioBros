@@ -115,6 +115,9 @@ public class PlayScreen implements Screen {
         player.update(dt);
         for (Enemy enemy : creator.getGoombas()){
             enemy.update(dt);
+            if(enemy.getX() < player.getX() + 224 / MarioBros.PPM){         //wrogowie zaczynają się poruszać dopiero wtedy gdy mario jest niedaleko
+                enemy.b2body.setActive(true);
+            }
         }
         hud.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;                 //attach our gamecam to our players.x coordinate
