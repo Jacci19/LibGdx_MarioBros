@@ -34,8 +34,11 @@ public class Coin extends InteractiveTileObject{
         else{
             if (object.getProperties().containsKey("mushroom")){                    //jeśli ten coin-brick ma właściwość "mushroom" (nadaną przez nas w Tiled) to wypuść z niego grzybka
                 screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 16 / MarioBros.PPM), Mushroom.class));
+                //MarioBros.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
             }
-            MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
+            else{
+                MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
+            }
         }
         getCell().setTile(tileSet.getTile(BLANK_COIN));
         Hud.addScore(100);
