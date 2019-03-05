@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.PriorityQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.sprites.enemies.Enemy;
@@ -53,7 +53,7 @@ public class PlayScreen implements Screen {
     private Music music;
 
     private Array<Item> items;
-    private PriorityQueue<ItemDef> itemsToSpawn;
+    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
 
     public PlayScreen(MarioBros game) {
@@ -90,7 +90,7 @@ public class PlayScreen implements Screen {
         //music.play();
 
         items = new Array<Item>();
-        itemsToSpawn = new PriorityQueue<ItemDef>();
+        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
     public void spawnItem(ItemDef idef){
