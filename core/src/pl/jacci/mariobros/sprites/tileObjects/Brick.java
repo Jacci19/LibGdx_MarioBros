@@ -1,6 +1,7 @@
 package pl.jacci.mariobros.sprites.tileObjects;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 
 import pl.jacci.mariobros.MarioBros;
@@ -9,8 +10,8 @@ import pl.jacci.mariobros.screens.PlayScreen;
 
 
 public class Brick extends InteractiveTileObject {
-    public Brick(PlayScreen screen, Rectangle bounds){
-        super(screen, bounds);
+    public Brick(PlayScreen screen, MapObject object){
+        super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MarioBros.BRICK_BIT);
     }
