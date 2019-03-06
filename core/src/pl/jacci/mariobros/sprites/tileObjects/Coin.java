@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.scenes.Hud;
 import pl.jacci.mariobros.screens.PlayScreen;
+import pl.jacci.mariobros.sprites.Mario;
 import pl.jacci.mariobros.sprites.items.ItemDef;
 import pl.jacci.mariobros.sprites.items.Mushroom;
 
@@ -26,7 +27,7 @@ public class Coin extends InteractiveTileObject{
     }
 
     @Override
-    public void onHeadHit() {
+    public void onHeadHit(Mario mario) {
         System.out.println("coin collision");
         if(getCell().getTile().getId() == BLANK_COIN){
             MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
@@ -39,8 +40,8 @@ public class Coin extends InteractiveTileObject{
             else{
                 MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
             }
+            getCell().setTile(tileSet.getTile(BLANK_COIN));
+            Hud.addScore(100);
         }
-        getCell().setTile(tileSet.getTile(BLANK_COIN));
-        Hud.addScore(100);
     }
 }

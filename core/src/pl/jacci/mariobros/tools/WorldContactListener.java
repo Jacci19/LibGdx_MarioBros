@@ -22,18 +22,17 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;           //cdef - Collision Definition - https://youtu.be/87He9A4kTQ0?list=PLZm85UZQLd2SXQzsF-a0-pPF6IWDDdrXt&t=346
 
-
-        if(fixA.getUserData() == "head" || fixB.getUserData() == "head"){
-            Fixture head = (fixA.getUserData() == "head") ? fixA : fixB;
-            Fixture object = (head == fixA) ? fixB : fixA;
-
-            if(object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){          //https://youtu.be/tcH6Mp03KC0?list=PLZm85UZQLd2SXQzsF-a0-pPF6IWDDdrXt&t=680
-                ((InteractiveTileObject) object.getUserData()).onHeadHit();
-            }
-        }
-
-
         switch (cDef){
+            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:                                    //jeśli głowa mario koliduje z cegłą
+            case MarioBros.MARIO_HEAD_BIT | MarioBros.COIN_BIT:                                     //jeśli głowa mario koliduje z cegło-monetą
+                if(fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT){
+                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit((Mario) fixA.getUserData());
+                }
+                else{
+                    ((InteractiveTileObject) fixA.getUserData()).onHeadHit((Mario) fixB.getUserData());
+                }
+                break;
+
             case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:                                    //jeśli czubek głowy wroga koliduje z mario...
                 if(fixA.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT){
                     ((Enemy)fixA.getUserData()).hitOnHead();

@@ -60,17 +60,17 @@ public class Goomba extends Enemy
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
         fdef.filter.categoryBits = MarioBros.ENEMY_BIT;
-        fdef.filter.maskBits = MarioBros.GROUND_BIT |
-                MarioBros.COIN_BIT |
-                MarioBros.BRICK_BIT |
-                MarioBros.ENEMY_BIT |
-                MarioBros.OBJECT_BIT |
-                MarioBros.MARIO_BIT;
+        fdef.filter.maskBits =  MarioBros.GROUND_BIT |
+                                MarioBros.COIN_BIT |
+                                MarioBros.BRICK_BIT |
+                                MarioBros.ENEMY_BIT |
+                                MarioBros.OBJECT_BIT |
+                                MarioBros.MARIO_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
-        //Create the Head here:
+            //Create the Head here:
         PolygonShape head = new PolygonShape();                                                     // trapez na głowie goomby
         Vector2[] vertice = new Vector2[4];                                                         // vertices - wierzchołki
         vertice[0] = new Vector2(-4, 7).scl(1 / MarioBros.PPM);                                // dałem mniejszy trapez niż brendt
@@ -92,7 +92,7 @@ public class Goomba extends Enemy
 
     @Override
     public void hitOnHead() {                                                                       //co ma się stać jak mario skoczy goombie na głowę...
-        //w box2D nie można usuwać obiektów (box2d bodies) podczas kolizji, dlatego zrobimy to w ten sposób:
+            //w box2D nie można usuwać obiektów (box2d bodies) podczas kolizji, dlatego zrobimy to w ten sposób:
         setToDestroy = true;
     }
 }
