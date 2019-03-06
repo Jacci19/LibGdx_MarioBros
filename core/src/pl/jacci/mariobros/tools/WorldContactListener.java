@@ -52,7 +52,12 @@ public class WorldContactListener implements ContactListener {
                 break;
 
             case MarioBros.MARIO_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z mario...
-                Gdx.app.log("MARIO", "DIED");
+                if(fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT){
+                    ((Mario) fixA.getUserData()).hit();
+                }
+                else{
+                    ((Mario) fixB.getUserData()).hit();
+                }
                 break;
 
             case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z innym wrogiem...
