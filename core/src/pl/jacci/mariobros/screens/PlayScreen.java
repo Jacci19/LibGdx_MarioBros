@@ -61,12 +61,10 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
         this.game = game;
         gameCam = new OrthographicCamera();                                              //create cam used to follow mario through cam world
-
                                                                             //create a FitViewport to maintain virtual aspect ratio despite screen size
         //gamePort = new ScreenViewport(gameCam);                                        //można porównać wygląd apki na trzech różnych viewportach
         //gamePort = new StretchViewport(800, 480, gameCam);
         gamePort = new FitViewport(MarioBros.V_WIDTH / MarioBros.PPM, MarioBros.V_HEIGHT / MarioBros.PPM, gameCam);
-
         hud = new Hud(game.batch);                                                       //create our game HUD for scores/timers/level info
                                                                                          //Load our map and setup our map renderer
         maploader = new TmxMapLoader();
@@ -74,14 +72,12 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBros.PPM);
                                                                                 //initially set our gamcam to be centered correctly at the start of of map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);   //ustalamy początkową pozycję kamery (aby nie patrzyła na 0,0
-
                                                             //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
         world = new World(new Vector2(0,-10), true);                        //w box2d jak obiekt się nie rusza to nie jest obliczany (sleep)
         b2dr = new Box2DDebugRenderer();                                                //allows for debug lines of our box2d world.
 
         creator = new B2WorldCreator(this);
         player = new Mario(this);                                                 //create mario in our game world
-
         world.setContactListener(new WorldContactListener());
 
         music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
@@ -115,20 +111,17 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt){
-/*
-        //if our user is holding down mouse, move our camera through the game world                 //było używane jak nie było wprowadzonej reakcji na klawisze
-        if(Gdx.input.isTouched()){
-            gameCam.position.x += 100 * dt;
-        }
-*/
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){                                                                  //działa raz po naciśnięciu
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);      //center - aby nie powstał torque
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){                      //działa aż do puszczenia
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+
+        if (player.currentState != Mario.State.DEAD){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){                                                                  //działa raz po naciśnięciu
+                player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);      //center - aby nie powstał torque
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){                      //działa aż do puszczenia
+                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
+                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
         }
     }
 
@@ -148,8 +141,9 @@ public class PlayScreen implements Screen {
             item.update(dt);
         }
         hud.update(dt);
-        gameCam.position.x = player.b2body.getPosition().x;                 //attach our gamecam to our players.x coordinate
-
+        if (player.currentState != Mario.State.DEAD) {
+            gameCam.position.x = player.b2body.getPosition().x;             //attach our gamecam to our players.x coordinate
+        }
         gameCam.update();                                                   //update our gamecam with correct coordinates after changes
         renderer.setView(gameCam);                                          //tell our renderer to draw only what our camera can see in our game world.
     }

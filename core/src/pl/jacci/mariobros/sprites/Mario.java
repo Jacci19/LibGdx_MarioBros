@@ -1,5 +1,6 @@
 package pl.jacci.mariobros.sprites;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -19,7 +22,7 @@ import pl.jacci.mariobros.screens.PlayScreen;
 
 public class Mario extends Sprite {
 
-    public enum State { FALLING, JUMPING, STANDING, RUNNING, GROWING };
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, GROWING, DEAD };
     public State currentState;
     public State previousState;
     public World world;
@@ -28,6 +31,7 @@ public class Mario extends Sprite {
     private TextureRegion marioStand;
     private Animation marioRun;
     private TextureRegion marioJump;                                    //jak jest jedna klatka to Texture Region, jak więcej to Animation
+    private TextureRegion marioDead;                                    //jak jest jedna klatka to Texture Region, jak więcej to Animation
     private TextureRegion bigMarioStand;
     private TextureRegion bigMarioJump;
     private Animation bigMarioRun;
@@ -39,6 +43,7 @@ public class Mario extends Sprite {
     private boolean runGrowAnimation;
     private boolean timeToDefineBigMario;
     private boolean timeToRedefineMario;
+    private boolean marioIsDead;
 
 
     public Mario(PlayScreen screen){
@@ -75,7 +80,7 @@ public class Mario extends Sprite {
         bigMarioJump = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 80, 0, 16, 32);
         marioStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0, 0, 16, 16);                //create texture region for mario standing.  0,0 bo lewy górny róg obrazka z klatkami to PUW
         bigMarioStand = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32);
-
+        marioDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);                //create dead mario texture region
         defineMario();                                                                              //define mario in Box2d
 
         setBounds(0, 0, 16 / MarioBros.PPM, 16 / MarioBros.PPM);                   //set initial values for marios location, width and height. And initial frame as marioStand.
@@ -105,6 +110,9 @@ public class Mario extends Sprite {
 
         TextureRegion region;
         switch(currentState){                                                                       //depending on the state, get corresponding animation keyFrame.
+            case DEAD:
+                region = marioDead;
+                break;
             case GROWING:
                 region = (TextureRegion) growMario.getKeyFrame(stateTimer);
                 if(growMario.isAnimationFinished(stateTimer)){
@@ -141,7 +149,10 @@ public class Mario extends Sprite {
     public State getState(){
             //Test to Box2D for velocity on the X and Y-Axis
             //if mario is going positive in Y-Axis he is jumping... or if he just jumped and is falling remain in jump state
-        if(runGrowAnimation){
+        if(marioIsDead){
+            return State.DEAD;
+        }
+        else if(runGrowAnimation){
             return State.GROWING;
         }
         else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
@@ -174,7 +185,15 @@ public class Mario extends Sprite {
             MarioBros.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
         }
         else{
+            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
             MarioBros.manager.get("audio/sounds/mario_die.wav", Sound.class).play();
+            marioIsDead = true;
+            Filter filter = new Filter();
+            filter.maskBits = MarioBros.NOTHING_BIT;                //aby mario z niczym nie kolidował podzas skoku agonalnego
+            for(Fixture fixture : b2body.getFixtureList()){
+                fixture.setFilterData(filter);
+            }
+            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
         }
     }
 
