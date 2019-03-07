@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
 import pl.jacci.mariobros.screens.PlayScreen;
+import pl.jacci.mariobros.sprites.Mario;
 
 
 public abstract class Enemy extends Sprite {
@@ -25,7 +26,7 @@ public abstract class Enemy extends Sprite {
 
     protected abstract void defineEnemy();
     public abstract void update(float dt);
-    public abstract void hitOnHead();
+    public abstract void hitOnHead(Mario mario);
 
     public void reverseVelocity(boolean x, boolean y) {
         if (x)

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.screens.PlayScreen;
+import pl.jacci.mariobros.sprites.Mario;
 
 
 public class Goomba extends Enemy
@@ -92,7 +93,7 @@ public class Goomba extends Enemy
     }
 
     @Override
-    public void hitOnHead() {                                                                       //co ma się stać jak mario skoczy goombie na głowę...
+    public void hitOnHead(Mario mario) {                                                                       //co ma się stać jak mario skoczy goombie na głowę...
             //w box2D nie można usuwać obiektów (box2d bodies) podczas kolizji, dlatego zrobimy to w ten sposób:
         setToDestroy = true;
         MarioBros.manager.get("audio/sounds/stomp.wav", Sound.class).play();

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.screens.PlayScreen;
+import pl.jacci.mariobros.sprites.Mario;
 
 
 public class Turtle extends Enemy {
@@ -113,7 +114,7 @@ public class Turtle extends Enemy {
     }
 
     @Override
-    public void hitOnHead() {
+    public void hitOnHead(Mario mario) {
         if(currentState != State.SHELL){
             currentState = State.SHELL;
             velocity.x = 0;

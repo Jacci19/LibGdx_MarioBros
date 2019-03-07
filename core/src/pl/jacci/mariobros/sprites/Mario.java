@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 
 import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.screens.PlayScreen;
+import pl.jacci.mariobros.sprites.enemies.Enemy;
 
 
 public class Mario extends Sprite {
@@ -177,7 +178,7 @@ public class Mario extends Sprite {
         MarioBros.manager.get("audio/sounds/powerup.wav", Sound.class).play();
     }
 
-    public void hit(){
+    public void hit(Enemy enemy){
         if(marioIsBig){
             marioIsBig = false;
             timeToRedefineMario = true;

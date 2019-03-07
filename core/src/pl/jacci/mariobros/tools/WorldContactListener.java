@@ -35,10 +35,10 @@ public class WorldContactListener implements ContactListener {
 
             case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:                                    //jeśli czubek głowy wroga koliduje z mario...
                 if(fixA.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT){
-                    ((Enemy)fixA.getUserData()).hitOnHead();
+                    ((Enemy)fixA.getUserData()).hitOnHead((Mario) fixB.getUserData());
                 }
                 else{
-                    ((Enemy)fixB.getUserData()).hitOnHead();
+                    ((Enemy)fixB.getUserData()).hitOnHead((Mario) fixA.getUserData());
                 }
                 break;
 
@@ -53,10 +53,10 @@ public class WorldContactListener implements ContactListener {
 
             case MarioBros.MARIO_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z mario...
                 if(fixA.getFilterData().categoryBits == MarioBros.MARIO_BIT){
-                    ((Mario) fixA.getUserData()).hit();
+                    ((Mario) fixA.getUserData()).hit((Enemy)fixB.getUserData());
                 }
                 else{
-                    ((Mario) fixB.getUserData()).hit();
+                    ((Mario) fixB.getUserData()).hit((Enemy)fixA.getUserData());
                 }
                 break;
 
