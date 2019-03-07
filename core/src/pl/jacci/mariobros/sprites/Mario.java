@@ -190,12 +190,14 @@ public class Mario extends Sprite {
         }
     }
 
-    public void grow() {
-        runGrowAnimation = true;
-        marioIsBig = true;
-        timeToDefineBigMario = true;
-        setBounds(getX(), getY(), getWidth(), getHeight() * 2);
-        MarioBros.manager.get("audio/sounds/powerup.wav", Sound.class).play();
+    public void grow(){
+        if( !isBig() ){
+            runGrowAnimation = true;
+            marioIsBig = true;
+            timeToDefineBigMario = true;
+            setBounds(getX(), getY(), getWidth(), getHeight() * 2);
+            MarioBros.manager.get("audio/sounds/powerup.wav", Sound.class).play();
+        }
     }
 
     public void die() {
