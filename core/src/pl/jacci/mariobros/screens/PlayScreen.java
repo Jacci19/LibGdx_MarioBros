@@ -201,6 +201,10 @@ public class PlayScreen implements Screen {
         return world;
     }
 
+    public Hud getHud(){
+        return hud;
+    }
+
     @Override
     public void pause() {
 

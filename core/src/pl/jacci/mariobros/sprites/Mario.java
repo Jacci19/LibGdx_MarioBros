@@ -99,6 +99,14 @@ public class Mario extends Sprite {
     }
 
     public void update(float dt) {
+
+        // time is up : too late mario dies T_T
+        // the !isDead() method is used to prevent multiple invocation of "die music" and jumping
+        // there is probably better ways to do that but it works for now.
+        if (screen.getHud().isTimeUp() && !isDead()) {
+            die();
+        }
+
         //update our sprite to correspond with the position of our Box2D body
         if (marioIsBig) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 - 6 / MarioBros.PPM);
@@ -190,6 +198,23 @@ public class Mario extends Sprite {
         MarioBros.manager.get("audio/sounds/powerup.wav", Sound.class).play();
     }
 
+    public void die() {
+
+        if (!isDead()) {
+            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
+            MarioBros.manager.get("audio/sounds/mario_die.wav", Sound.class).play();
+            marioIsDead = true;
+            Filter filter = new Filter();
+            filter.maskBits = MarioBros.NOTHING_BIT;
+
+            for (Fixture fixture : b2body.getFixtureList()) {
+                fixture.setFilterData(filter);
+            }
+
+            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+        }
+    }
+
     public void jump(){
         if ( currentState != State.JUMPING ) {
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
@@ -209,15 +234,7 @@ public class Mario extends Sprite {
                 setBounds(getX(), getY(), getWidth(), getHeight() / 2);
                 MarioBros.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
             } else {
-                MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-                MarioBros.manager.get("audio/sounds/mario_die.wav", Sound.class).play();
-                marioIsDead = true;
-                Filter filter = new Filter();
-                filter.maskBits = MarioBros.NOTHING_BIT;                //aby mario z niczym nie kolidował podzas skoku agonalnego
-                for (Fixture fixture : b2body.getFixtureList()) {
-                    fixture.setFilterData(filter);
-                }
-                b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+                die();
             }
         }
     }
