@@ -61,8 +61,10 @@ public class WorldContactListener implements ContactListener {
                 break;
 
             case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z innym wrogiem...
-                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+//                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+//                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                ((Enemy)fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
+                ((Enemy)fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
                 break;
 
             case MarioBros.ITEM_BIT | MarioBros.OBJECT_BIT:                                         //jeśli item koliduje z obiektem...

@@ -92,6 +92,16 @@ public class Goomba extends Enemy
             super.draw(batch);                                                                      //aby goomba po zmiażdżeniu zniknął po jednej sekundzie.
     }
 
+    public void onEnemyHit(Enemy enemy){
+        if(enemy instanceof Turtle && ((Turtle) enemy).currentState == Turtle.State.MOVING_SHELL){
+            setToDestroy = true;
+        }
+        else{
+            reverseVelocity(true, false);
+        }
+    }
+
+
     @Override
     public void hitOnHead(Mario mario) {                                                                       //co ma się stać jak mario skoczy goombie na głowę...
             //w box2D nie można usuwać obiektów (box2d bodies) podczas kolizji, dlatego zrobimy to w ten sposób:

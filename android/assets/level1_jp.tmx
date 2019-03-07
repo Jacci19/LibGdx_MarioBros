@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="51">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="53">
  <tileset firstgid="1" name="NES - Super Mario Bros - Tileset" tilewidth="16" tileheight="16" tilecount="924" columns="33">
   <image source="NES - Super Mario Bros - Tileset.png" width="528" height="448"/>
  </tileset>
@@ -10,7 +10,7 @@
  </layer>
  <layer id="2" name="graphics" width="240" height="13">
   <data encoding="base64" compression="zlib">
-   eJzt100OgjAQhuGWne7UlVfQnbpTb+VWPYV4E/F4jgsCwQptHUIx75N8Iab2B9KxYgwAAEjJLTMml9wznXFypfFSmw9I0UP2fSF5/rj/y3EKpfFSmw8YE59zeak8V+pnadaStu9qPSfAl9a5HDJX32fpWH4nAHziPzcAYEya72/lO139qmlijZna/vv40LhHjnlomvewz0N01dpK2taN9q41u/oA/2Yme3wjWQTu9ZCaj6nPtnafNfvW79C/XUCsdx2cJFvJzlEPe/l8qOVoq34hNR9Sn2e5XiRX627vWrOrT+x9uNYCDM2Sr9F4RjxrEhNfL571MEk=
+   eJzt10EOgjAQQNGWne7UlVfQnbpTb+VWPYV4E/F4jgsiwQJtHaWY/5IJMbXT0nQoGAMAAFJyyYzJJa6ZTp5cKV9q4wEpusm+LyTuH+7/Mk+hlC+18YAh8TmX58pjpX6WZi3R9l+tdQJ8aZ3LIWN9+ywdynMCwDveuQEAQ1L/fiu/6apXTSNrzNj+vq+Lxj1yzEPTVHF/x+iqsYW0LWvtvnN29QX+xUT29kpiFrjHQ2o+pj7b2kPm3JW772cXEOtZBweJtcTGUQ9b+b2rxN6++oXUfEh9HuV6kjhbd3vXnJtyx9yHay5A3yzRGBprxFoTMeHrAQxXMA0=
   </data>
  </layer>
  <objectgroup id="3" name="ground">
@@ -19,7 +19,7 @@
   <object id="28" x="1456" y="191.75" width="175.5" height="18.75"/>
  </objectgroup>
  <objectgroup id="4" name="pipes">
-  <object id="6" x="912.5" y="127.5" width="30.5" height="64.5"/>
+  <object id="6" x="944" y="128.5" width="30.5" height="64.5"/>
   <object id="7" x="449" y="159.5" width="29.5" height="32.5"/>
   <object id="8" x="576.5" y="144" width="30.5" height="48"/>
   <object id="9" x="704.5" y="127.5" width="30.5" height="64"/>
@@ -57,14 +57,13 @@
  <objectgroup id="7" name="goombas">
   <object id="35" x="496" y="175.75" width="16" height="16"/>
   <object id="36" x="544" y="176" width="16" height="15.75"/>
-  <object id="37" x="768.5" y="175.75" width="15.75" height="16"/>
-  <object id="41" x="351.5" y="111" width="16.5" height="15.5"/>
   <object id="42" x="624.5" y="176.5" width="14.5" height="15.5"/>
-  <object id="44" x="864" y="176.5" width="15.5" height="15"/>
  </objectgroup>
  <objectgroup id="8" name="turtles">
   <object id="46" x="400.5" y="175.5" width="15" height="16"/>
   <object id="49" x="832.5" y="176" width="16" height="15.5"/>
   <object id="50" x="1088.5" y="176" width="15.5" height="15.5"/>
+  <object id="51" x="768.5" y="175.5" width="15" height="16"/>
+  <object id="52" x="304" y="176.5" width="15.5" height="16.5"/>
  </objectgroup>
 </map>
