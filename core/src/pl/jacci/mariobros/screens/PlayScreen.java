@@ -114,7 +114,7 @@ public class PlayScreen implements Screen {
 
         if (player.currentState != Mario.State.DEAD){
             if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){                                                                  //działa raz po naciśnięciu
-                player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);      //center - aby nie powstał torque
+                player.jump();
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){                      //działa aż do puszczenia
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
@@ -122,7 +122,9 @@ public class PlayScreen implements Screen {
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
             }
-        }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+                player.fire();        }
+            }
     }
 
     public void update(float dt){

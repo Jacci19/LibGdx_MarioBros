@@ -1,7 +1,6 @@
 package pl.jacci.mariobros.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,8 +17,8 @@ import pl.jacci.mariobros.sprites.Mario;
 
 
 public class Turtle extends Enemy {
-    public static final int KICK_LEFT_SPEED = -2;
-    public static final int KICK_RIGHT_SPEED = 2;
+    public static final int KICK_LEFT = -2;
+    public static final int KICK_RIGHT = 2;
     public enum State {WALKING, STANDING_SHELL, MOVING_SHELL, DEAD}
     public State currentState;
     public State previousState;
@@ -28,8 +27,6 @@ public class Turtle extends Enemy {
     private Array<TextureRegion> frames;
     private TextureRegion shell;
     private float deadRotationDegrees;
-    private boolean setToDestroy;
-    private boolean destroyed;
 
 
     public Turtle(PlayScreen screen, float x, float y) {
@@ -67,7 +64,7 @@ public class Turtle extends Enemy {
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
-        //Create the Head here:
+            //Create the Head here:
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
         vertice[0] = new Vector2(-5, 8).scl(1 / MarioBros.PPM);
@@ -77,34 +74,17 @@ public class Turtle extends Enemy {
         head.set(vertice);
 
         fdef.shape = head;
-        fdef.restitution = 1.5f;
+        fdef.restitution = 1.8f;
         fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
-    }
-
-    public void onEnemyHit(Enemy enemy){
-        if (enemy instanceof Turtle){
-            if(((Turtle) enemy).currentState == State.MOVING_SHELL && currentState != State.MOVING_SHELL){
-                killed();
-            }
-            else if(currentState == State.MOVING_SHELL && ((Turtle) enemy).currentState == State.WALKING){
-                return;
-            }
-            else{
-                reverseVelocity(true, false);
-            }
-        }
-        else if(currentState != State.MOVING_SHELL){
-            reverseVelocity(true, false);
-        }
     }
 
     public TextureRegion getFrame(float dt){
         TextureRegion region;
 
         switch (currentState){
-            case STANDING_SHELL:
             case MOVING_SHELL:
+            case STANDING_SHELL:
                 region = shell;                                                         //przypisanie grafiki do tych stanów
                 break;
             case WALKING:
@@ -120,10 +100,9 @@ public class Turtle extends Enemy {
             region.flip(true, false);
         }
         stateTime = currentState == previousState ? stateTime + dt : 0;
-        //update previous state
-        previousState = currentState;
-        //return our final adjusted frame
-        return region;
+        previousState = currentState;                                                  //update previous state
+        return region;                                                                 //return our final adjusted frame
+
     }
 
     @Override
@@ -133,39 +112,32 @@ public class Turtle extends Enemy {
             currentState = State.WALKING;
             velocity.x = 1;
         }
-
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - 8 /MarioBros.PPM);
-        if(currentState == State.DEAD){
-            deadRotationDegrees += 3;
-            rotate(deadRotationDegrees);
-            if (stateTime > 5 && !destroyed){
-                world.destroyBody(b2body);
-                destroyed = true;
-            }
-        }
-        else{
-            b2body.setLinearVelocity(velocity);
-        }
+        b2body.setLinearVelocity(velocity);
     }
 
     @Override
     public void hitOnHead(Mario mario) {
-        if(currentState != State.STANDING_SHELL){
+        if(currentState == State.STANDING_SHELL) {
+            if(mario.b2body.getPosition().x > b2body.getPosition().x)
+                velocity.x = KICK_LEFT;
+            else
+                velocity.x = KICK_RIGHT;
+            currentState = State.MOVING_SHELL;
+        }
+        else {
             currentState = State.STANDING_SHELL;
             velocity.x = 0;
-        } else {
-            kick(mario.getX() <= this.getX() ? KICK_RIGHT_SPEED : KICK_LEFT_SPEED);
         }
     }
 
-    public void draw(Batch batch){
-        if (!destroyed){
-            super.draw(batch);                              //aby uniknąć bugu (https://youtu.be/6cOnU9ka-mA?list=PLZm85UZQLd2SXQzsF-a0-pPF6IWDDdrXt&t=636)
-        }
+    @Override
+    public void hitByEnemy(Enemy enemy){
+        reverseVelocity(true, false);
     }
 
-    public void kick(int speed){
-        velocity.x = speed;
+    public void kick(int direction){
+        velocity.x = direction;
         currentState = State.MOVING_SHELL;
     }
 

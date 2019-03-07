@@ -1,6 +1,5 @@
 package pl.jacci.mariobros.tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -11,6 +10,7 @@ import pl.jacci.mariobros.MarioBros;
 import pl.jacci.mariobros.sprites.Mario;
 import pl.jacci.mariobros.sprites.enemies.Enemy;
 import pl.jacci.mariobros.sprites.items.Item;
+import pl.jacci.mariobros.sprites.other.FireBall;
 import pl.jacci.mariobros.sprites.tileObjects.InteractiveTileObject;
 
 public class WorldContactListener implements ContactListener {
@@ -61,10 +61,8 @@ public class WorldContactListener implements ContactListener {
                 break;
 
             case MarioBros.ENEMY_BIT | MarioBros.ENEMY_BIT:                                         //jeśli wróg koliduje z innym wrogiem...
-//                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-//                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
-                ((Enemy)fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
-                ((Enemy)fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
+                ((Enemy)fixA.getUserData()).hitByEnemy((Enemy)fixB.getUserData());
+                ((Enemy)fixB.getUserData()).hitByEnemy((Enemy)fixA.getUserData());
                 break;
 
             case MarioBros.ITEM_BIT | MarioBros.OBJECT_BIT:                                         //jeśli item koliduje z obiektem...
@@ -84,21 +82,25 @@ public class WorldContactListener implements ContactListener {
                     ((Item)fixB.getUserData()).use((Mario) fixA.getUserData());
                 }
                 break;
+
+            case MarioBros.FIREBALL_BIT | MarioBros.OBJECT_BIT:                                     //jeśli fireball koliduje z obiektem...
+                if(fixA.getFilterData().categoryBits == MarioBros.FIREBALL_BIT)
+                    ((FireBall)fixA.getUserData()).setToDestroy();
+                else
+                    ((FireBall)fixB.getUserData()).setToDestroy();
+                break;
         }
     }
 
     @Override
     public void endContact(Contact contact) {
-        //Gdx.app.log("End contact","b");
     }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-
     }
 }
