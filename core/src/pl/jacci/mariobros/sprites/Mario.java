@@ -191,8 +191,10 @@ public class Mario extends Sprite {
     }
 
     public void jump(){
-        b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
-        currentState = State.JUMPING;
+        if ( currentState != State.JUMPING ) {
+            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            currentState = State.JUMPING;
+        }
     }
 
 
