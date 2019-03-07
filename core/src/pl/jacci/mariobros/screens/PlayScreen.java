@@ -131,7 +131,7 @@ public class PlayScreen implements Screen {
         handleSpawningItems();
         world.step(1/60f, 6, 2);         //takes 1 step in the physics simulation(60 times per second)
         player.update(dt);
-        for (Enemy enemy : creator.getGoombas()){
+        for (Enemy enemy : creator.getEnemies()){
             enemy.update(dt);
             if(enemy.getX() < player.getX() + 224 / MarioBros.PPM){         //wrogowie zaczynają się poruszać dopiero wtedy gdy mario jest niedaleko
                 enemy.b2body.setActive(true);
@@ -162,7 +162,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for (Enemy enemy : creator.getGoombas()){
+        for (Enemy enemy : creator.getEnemies()){
             enemy.draw(game.batch);
         }
         for(Item item : items){
