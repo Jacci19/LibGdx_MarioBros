@@ -100,20 +100,17 @@ public class Mario extends Sprite {
 
     public void update(float dt) {
 
-        // time is up : too late mario dies T_T
-        // the !isDead() method is used to prevent multiple invocation of "die music" and jumping
-        // there is probably better ways to do that but it works for now.
-        if (screen.getHud().isTimeUp() && !isDead()) {
+            //Mario dies when he falling in a pit or the time is up
+        if (!isDead() && (screen.getHud().isTimeUp() || b2body.getPosition().y < 0)){
             die();
         }
-
-        //update our sprite to correspond with the position of our Box2D body
+            //update our sprite to correspond with the position of our Box2D body
         if (marioIsBig) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 - 6 / MarioBros.PPM);
         } else {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         }
-        //update sprite with the correct frame depending on mario's current action
+            //update sprite with the correct frame depending on mario's current action
         setRegion(getFrame(dt));
         if (timeToDefineBigMario) {
             defineBigMario();
