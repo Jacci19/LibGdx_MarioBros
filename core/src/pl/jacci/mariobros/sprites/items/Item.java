@@ -41,8 +41,9 @@ public abstract class Item extends Sprite {
     }
 
     public void draw(Batch batch){
-        if(!destroyed)
+        if(!destroyed){
             super.draw(batch);
+        }
     }
 
     public void destroy(){
@@ -50,9 +51,11 @@ public abstract class Item extends Sprite {
     }
 
     public void reverseVelocity(boolean x, boolean y) {
-        if (x)
+        if (x){
             velocity.x = -velocity.x;
-        if (y)
+        }
+        if (y){
             velocity.y = -velocity.y;
+        }
     }
 }
