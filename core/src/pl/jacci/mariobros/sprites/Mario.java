@@ -120,7 +120,7 @@ public class Mario extends Sprite {
             defineBigMario();
         }
         if (timeToRedefineMarioToSmall) {
-            redefineMario();
+            defineSmallMario();
         }
 
         for(FireBall  ball : fireballs) {
@@ -242,41 +242,6 @@ public class Mario extends Sprite {
         }
     }
 
-    public void redefineMario() {
-        Vector2 position = b2body.getPosition();
-        world.destroyBody(b2body);
-
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(position);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(6 / MarioBros.PPM);
-        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits =  MarioBros.GROUND_BIT |
-                                MarioBros.COIN_BIT |
-                                MarioBros.BRICK_BIT |
-                                MarioBros.ENEMY_BIT |
-                                MarioBros.OBJECT_BIT |
-                                MarioBros.ENEMY_HEAD_BIT |
-                                MarioBros.ITEM_BIT;
-
-        fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData(this);
-
-        EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
-        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
-        fdef.shape = head;
-        fdef.isSensor = true;
-
-        b2body.createFixture(fdef).setUserData(this);
-
-        timeToRedefineMarioToSmall = false;
-    }
-
     public void defineBigMario() {
         Vector2 currentPosition = b2body.getPosition();
         world.destroyBody(b2body);                                                          //niszczy małego mario aby zaraz stworzyć dużego
@@ -289,61 +254,76 @@ public class Mario extends Sprite {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
-        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits =  MarioBros.GROUND_BIT |
-                                MarioBros.COIN_BIT |
-                                MarioBros.BRICK_BIT |
-                                MarioBros.ENEMY_BIT |
-                                MarioBros.OBJECT_BIT |
-                                MarioBros.ENEMY_HEAD_BIT |
-                                MarioBros.ITEM_BIT;
+        defineMarioBits(fdef);
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
         shape.setPosition(new Vector2(0, -14 / MarioBros.PPM));
         b2body.createFixture(fdef).setUserData(this);                                       //tworzymy drugie koło pod pierwszym bo mario jest duży
-
-        EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
-        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
-        fdef.shape = head;
-        fdef.isSensor = true;
-
+        createMarioHeadSensor(fdef);
         b2body.createFixture(fdef).setUserData(this);
         timeToDefineBigMario = false;
     }
 
-    public void defineMario() {
+    public void defineSmallMario() {
+        Vector2 position = b2body.getPosition();
+        world.destroyBody(b2body);
+
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / MarioBros.PPM, 32 / MarioBros.PPM);
+        bdef.position.set(position);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
-        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits =  MarioBros.GROUND_BIT |
-                                MarioBros.COIN_BIT |
-                                MarioBros.BRICK_BIT |
-                                MarioBros.ENEMY_BIT |
-                                MarioBros.OBJECT_BIT |
-                                MarioBros.ENEMY_HEAD_BIT |
-                                MarioBros.ITEM_BIT;                                                 //z czym mario może kolidować
-
+        defineMarioBits(fdef);
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
+        createMarioHeadSensor(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
-            //utworzenie sensora na głowie mario (do rozbijania cegieł)
-        EdgeShape head = new EdgeShape();       //sensor to linia pomiędzy dwoma punktami.
+        timeToRedefineMarioToSmall = false;
+    }
+
+
+    public void defineMario() {
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(32 / MarioBros.PPM, 32 / MarioBros.PPM);              //startowa pozycja mario
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(6 / MarioBros.PPM);
+        defineMarioBits(fdef);
+
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData(this);
+        createMarioHeadSensor(fdef);
+        b2body.createFixture(fdef).setUserData(this);
+    }
+
+    private void defineMarioBits(FixtureDef fdef) {
+        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
+        fdef.filter.maskBits = MarioBros.GROUND_BIT |
+                MarioBros.COIN_BIT |
+                MarioBros.BRICK_BIT |
+                MarioBros.ENEMY_BIT |
+                MarioBros.OBJECT_BIT |
+                MarioBros.ENEMY_HEAD_BIT |
+                MarioBros.ITEM_BIT;
+    }
+
+    private void createMarioHeadSensor(FixtureDef fdef) {
+        EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
         fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
         fdef.shape = head;
         fdef.isSensor = true;
-
-        b2body.createFixture(fdef).setUserData(this);
     }
+
 
     public void fire(){
         fireballs.add(new FireBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));

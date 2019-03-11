@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="53">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="256" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="53">
  <tileset firstgid="1" name="NES - Super Mario Bros - Tileset" tilewidth="16" tileheight="16" tilecount="924" columns="33">
   <image source="NES - Super Mario Bros - Tileset.png" width="528" height="448"/>
  </tileset>
- <layer id="1" name="background" width="240" height="13">
+ <layer id="9" name="background" width="256" height="13">
   <data encoding="base64" compression="zlib">
-   eJztwzEJAAAMA7Ay/4bqrir2JZBeUlVVVVVVVVVVVVVV1ccDxULniQ==
+   eJztwzEJAAAMA7Ay/4bqrjZ2JJBeUlVVVVVVVVVVVVVVVfXlAZFpf4g=
   </data>
  </layer>
- <layer id="2" name="graphics" width="240" height="13">
+ <layer id="10" name="graphics" width="256" height="13">
   <data encoding="base64" compression="zlib">
-   eJzt10EOgjAQQNGWne7UlVfQnbpTb+VWPYV4E/F4jgsiwQJtHaWY/5IJMbXT0nQoGAMAAFJyyYzJJa6ZTp5cKV9q4wEpusm+LyTuH+7/Mk+hlC+18YAh8TmX58pjpX6WZi3R9l+tdQJ8aZ3LIWN9+ywdynMCwDveuQEAQ1L/fiu/6apXTSNrzNj+vq+Lxj1yzEPTVHF/x+iqsYW0LWvtvnN29QX+xUT29kpiFrjHQ2o+pj7b2kPm3JW772cXEOtZBweJtcTGUQ9b+b2rxN6++oXUfEh9HuV6kjhbd3vXnJtyx9yHay5A3yzRGBprxFoTMeHrAQxXMA0=
+   eJzt10sOwiAQgGHoTnfqyivoTt2pt3KrnsJ6E+vxHGOaNg19gGOL+n/JpDHIQEmGgjEAAACFS2JMKnFNdPKkSvliGw/4RTepm0zi/mb95HkypXyxjQf8ky7ngrnyWLF/y5OGaPqv1joBfdE6F/iM9elv+bfsMwD0cWcAAKC76v01v9OWn5pG1pix7b+vi8Y7csxATKaK9RGirUYX0rastHeds6svgJeJ1MZKYuZZIz57Rkh9N7X7zLkt99B7HzCUZx0dJNYSG0c9beX3rhR7W/Tz2TN86vsoz5PE2brb2+ZclzvkPVxzAb6dJWpDY41YayIk+vIA3bAwDQ==
   </data>
  </layer>
  <objectgroup id="3" name="ground">

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="256" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="19">
+ <tileset firstgid="1" name="gutter" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="924" columns="33">
+  <image source="tileset_gutter.png" width="594" height="504"/>
+ </tileset>
+ <layer id="1" name="Background" width="256" height="16">
+  <data encoding="base64" compression="zlib">
+   eJztwzEJAAAMA7Ay/4bqrjL2JJBeUlVVVVVVVVVVVVVVVVVVVfX1AGyjsKY=
+  </data>
+ </layer>
+ <layer id="2" name="Graphics" width="256" height="16">
+  <data encoding="base64" compression="zlib">
+   eJzt10kKwkAQBdBOdrpTV15Bd44nVW+iHs8SFERwSCux1ffgExJSJFn8QKUEAAAA/KtVndI6sqnz5nJmgTJso7u7yL5hh89zObMAQLlyd4Oz4XtfB2hR7m4AAAD8rus9vz5duzx+QqdKqVt96OHwRfoF9yS3x6OYGRf8XVCCXnRkEhm01JWmfc7tsf7DfcfuzyLTG/+AeZwvIssHPXr2vqOmvdR/eE0lIn+bA5Y6E1Y=
+  </data>
+ </layer>
+ <objectgroup id="3" name="Ground">
+  <object id="3" x="0" y="240" width="4096" height="16"/>
+ </objectgroup>
+ <objectgroup id="4" name="Pipes">
+  <object id="4" x="560" y="207.667" width="30.3333" height="32.6667"/>
+  <object id="5" x="752" y="193" width="29.6667" height="47"/>
+  <object id="13" x="976.667" y="176" width="29.3333" height="63.3333"/>
+ </objectgroup>
+ <objectgroup id="5" name="Coinbricks">
+  <object id="9" x="368" y="176" width="14.6667" height="15.3333">
+   <properties>
+    <property name="mushroom" value=""/>
+   </properties>
+  </object>
+  <object id="10" x="448" y="176" width="14.6667" height="14.6667"/>
+  <object id="11" x="479.333" y="175.333" width="14.6667" height="15.3333"/>
+  <object id="12" x="464.667" y="112.667" width="14" height="14.6667"/>
+ </objectgroup>
+ <objectgroup id="6" name="Bricks">
+  <object id="6" x="432" y="176" width="15.3333" height="14.6667"/>
+  <object id="7" x="464" y="176" width="14.6667" height="14.6667"/>
+  <object id="8" x="494.667" y="175.333" width="16.6667" height="16"/>
+ </objectgroup>
+ <objectgroup id="7" name="Goombas">
+  <object id="14" x="624.667" y="223.333" width="15.3333" height="16.6667"/>
+  <object id="15" x="704" y="223.333" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="8" name="Turtles">
+  <object id="16" x="832" y="224.667" width="15.3333" height="14.6667"/>
+  <object id="17" x="912" y="224" width="15.3333" height="15.3333"/>
+ </objectgroup>
+</map>
